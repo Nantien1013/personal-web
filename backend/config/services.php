@@ -35,4 +35,7 @@ return [
         ],
     ],
 
+    'dictionary_api' => env('DICTIONARY_API_URL', 'https://api.dictionaryapi.dev'),
+    'mymemory_api' => env('MYMEMORY_API_URL', 'https://api.mymemory.translated.net'),
+
 ];
