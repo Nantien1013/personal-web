@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class StudyVocabulary extends Model
 {
+    use HasFactory;
+
     protected $table = 'study_vocabulary';
 
     protected $fillable = [
