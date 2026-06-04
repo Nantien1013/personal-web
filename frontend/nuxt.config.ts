@@ -4,6 +4,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: true,
 
+  srcDir: '.',
+
   modules: ['@pinia/nuxt'],
 
   runtimeConfig: {
