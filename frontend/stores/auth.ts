@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-interface AuthUser {
+export interface AuthUser {
   email: string
   role: string
 }
