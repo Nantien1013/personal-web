@@ -5,7 +5,7 @@ interface WorkForm {
   title: string
   title_original: string
   cover_url: string
-  status: string
+  status: 'plan' | 'watching' | 'completed' | 'on_hold' | 'dropped'
   rating: number | null
   is_favorite: boolean
   release_year: number | null
@@ -47,8 +47,12 @@ const defaultForm = (): WorkForm => ({
 const form = reactive<WorkForm & { id?: number }>(defaultForm())
 
 watch(() => props.work, (w) => {
-  if (w) Object.assign(form, w)
-  else Object.assign(form, defaultForm())
+  if (w) {
+    Object.assign(form, w)
+  } else {
+    Object.assign(form, defaultForm())
+    delete form.id
+  }
 }, { immediate: true })
 
 const groupedCategories = computed(() =>

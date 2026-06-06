@@ -5,7 +5,7 @@ interface Work {
   title: string
   title_original?: string
   cover_url?: string
-  status: string
+  status: 'plan' | 'watching' | 'completed' | 'on_hold' | 'dropped'
   rating?: number
   is_favorite: boolean
   release_year?: number
@@ -36,7 +36,7 @@ const seasonLabel: Record<string, string> = {
       <h3>{{ work.title }}</h3>
       <p v-if="work.title_original" class="original">{{ work.title_original }}</p>
       <div class="tags">
-        <span class="tag status">{{ statusLabel[work.status] }}</span>
+        <span class="tag status">{{ statusLabel[work.status] ?? work.status }}</span>
         <span v-if="work.release_year" class="tag year">{{ work.release_year }}</span>
         <span v-if="work.release_season" class="tag season">{{ seasonLabel[work.release_season] }}</span>
         <span v-for="cat in work.categories" :key="cat.id" class="tag category">{{ cat.name }}</span>
