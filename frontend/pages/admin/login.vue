@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({ middleware: false })
 
+const route = useRoute()
 const { login } = useAuth()
 const email = ref('')
 const password = ref('')
@@ -12,7 +13,7 @@ const handleLogin = async () => {
   error.value = ''
   try {
     await login(email.value, password.value)
-    await navigateTo('/')
+    await navigateTo((route.query.redirect as string) || '/admin')
   } catch {
     error.value = '帳號或密碼錯誤，請確認後再試。'
   } finally {
@@ -27,8 +28,9 @@ const handleLogin = async () => {
       <h1 class="text-2xl font-bold text-center mb-6">管理員登入</h1>
       <form @submit.prevent="handleLogin" class="space-y-4">
         <div>
-          <label class="block text-sm font-medium mb-1">Email</label>
+          <label for="login-email" class="block text-sm font-medium mb-1">Email</label>
           <input
+            id="login-email"
             v-model="email"
             type="email"
             required
@@ -37,8 +39,9 @@ const handleLogin = async () => {
           />
         </div>
         <div>
-          <label class="block text-sm font-medium mb-1">密碼</label>
+          <label for="login-password" class="block text-sm font-medium mb-1">密碼</label>
           <input
+            id="login-password"
             v-model="password"
             type="password"
             required
