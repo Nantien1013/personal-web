@@ -1,0 +1,26 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', 'Noto Sans TC', system-ui, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  transition: background 0.2s, color 0.2s;
+}
+
+a { color: var(--color-accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+img { max-width: 100%; height: auto; }
+
+.container { max-width: 1100px; margin: 0 auto; padding: 0 var(--space-4); }
+
+.page-wrapper { min-height: 100vh; padding-top: 4rem; }
+
+footer {
+  text-align: center;
+  padding: var(--space-8) var(--space-4);
+  color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border);
+  font-size: 0.875rem;
+}
