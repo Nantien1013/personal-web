@@ -22,6 +22,7 @@ describe('useVocabularyLookup', () => {
     debouncedLookup('')
     await new Promise(r => setTimeout(r, 600))
     expect(result.value).toBeNull()
+    expect(fetchSpy).not.toHaveBeenCalled()
     fetchSpy.mockRestore()
   })
 })

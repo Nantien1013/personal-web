@@ -14,13 +14,6 @@ const emit = defineEmits<{
   edit: [word: Word]
   delete: [id: number]
 }>()
-
-const playAudio = (url: string) => {
-  if (url) new Audio(url).play()
-  else window.speechSynthesis.speak(
-    Object.assign(new SpeechSynthesisUtterance(props.word.word), { lang: 'en-US' })
-  )
-}
 </script>
 
 <template>
@@ -32,7 +25,7 @@ const playAudio = (url: string) => {
     </div>
     <p class="meaning">{{ word.meaning }}</p>
     <div class="familiarity">
-      {{ '★'.repeat(word.familiarity) }}{{ '☆'.repeat(5 - word.familiarity) }}
+      {{ '★'.repeat(Math.min(word.familiarity, 5)) }}{{ '☆'.repeat(5 - Math.min(word.familiarity, 5)) }}
     </div>
     <div class="actions">
       <button @click="emit('edit', word)">編輯</button>
