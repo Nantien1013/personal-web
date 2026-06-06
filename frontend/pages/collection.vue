@@ -14,7 +14,7 @@ const loading = ref(true)
 const error = ref('')
 
 // 篩選狀態
-const filters = reactive({ type: '', status: '', search: '', season: '', favorite: false })
+const filters = ref({ type: '', status: '', search: '', season: '', favorite: false })
 
 // Modal 狀態
 const showModal = ref(false)
@@ -57,7 +57,7 @@ const openCreate = () => {
 const openEdit = (work: any) => {
   editingWork.value = {
     ...work,
-    category_ids: work.categories.map((c: any) => c.id),
+    category_ids: (work.categories ?? []).map((c: any) => c.id),
   }
   showModal.value = true
 }
