@@ -17,6 +17,7 @@ const toggleTheme = () => {
 
 <template>
   <div>
+    <NuxtRouteAnnouncer />
     <nav class="navbar">
       <div class="navbar-inner">
         <NuxtLink to="/" class="navbar-logo">dev<span>.</span></NuxtLink>
