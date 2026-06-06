@@ -3,7 +3,6 @@ useSeoMeta({ title: '論文單字庫' })
 
 const auth = useAuthStore()
 const api = useApi()
-const { debouncedLookup } = useVocabularyLookup()
 
 onMounted(() => auth.init())
 
@@ -89,8 +88,12 @@ const handleReview = async (id: number, result: string) => {
 
 const handleDelete = async (id: number) => {
   if (!confirm('確定刪除這個單字嗎？')) return
-  await api(`/vocabulary/${id}`, { method: 'DELETE' })
-  await fetchAll()
+  try {
+    await api(`/vocabulary/${id}`, { method: 'DELETE' })
+    await fetchAll()
+  } catch {
+    alert('刪除失敗。')
+  }
 }
 </script>
 
