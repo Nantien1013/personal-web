@@ -251,8 +251,8 @@ RSS, i18n, blog. Structure leaves room for them but they are not built in this p
 
 ---
 
-## 13. Open Items (confirm during implementation)
+## 13. Resolved Items
 
-- [ ] Admin seed credentials (email + initial password).
-- [ ] Whether to physically remove `backend/routes/api.php` or keep a thin internal-only stub.
-- [ ] Exact placeholder résumé content (name, links) — clearly marked for later replacement.
+- [x] **Admin seed credentials:** `admin@example.com` / `password123` (change after first login).
+- [x] **`backend/routes/api.php`:** delete it (plus `app/Http/Controllers/Api/*` after logic migration).
+- [x] **Résumé content:** clearly-marked realistic placeholders (`[Your Name]`, sample history), replaced later.
