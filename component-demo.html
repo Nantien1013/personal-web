@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue 元件範例</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 20px;
+      background: #f5f5f5;
+    }
+    h2 { color: #333; }
+    .section {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    /* 卡片樣式 */
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 16px;
+      margin: 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+    .card-name { font-weight: bold; font-size: 16px; }
+    .card-role { color: #888; font-size: 14px; }
+    /* 按讚按鈕 */
+    .like-btn {
+      margin-left: auto;
+      padding: 6px 14px;
+      border: 2px solid #f44336;
+      border-radius: 99px;
+      background: white;
+      color: #f44336;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .like-btn.liked {
+      background: #f44336;
+      color: white;
+    }
+    .hint {
+      background: #fff8e1;
+      border-left: 4px solid #ffc107;
+      padding: 12px 16px;
+      border-radius: 4px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+
+  <div class="section">
+    <h2>同一個「卡片元件」，用了三次</h2>
+    <div class="hint">
+      ⬇️ 下面三張卡片，是用<strong>同一個元件</strong>寫的。<br>
+      每張卡片有自己的按讚數，互不干擾。
+    </div>
+
+    <!-- 同一個元件 <member-card>，只是傳入不同資料 -->
+    <member-card emoji="👨‍💻" name="Alex" role="前端工程師"></member-card>
+    <member-card emoji="👩‍🎨" name="Sara" role="UI 設計師"></member-card>
+    <member-card emoji="🧑‍💼" name="Ken"  role="專案經理"></member-card>
+  </div>
+
+  <div class="section">
+    <h2>如果沒有元件...</h2>
+    <div class="hint">
+      ⬇️ 下面三張卡片，是把 HTML <strong>複製貼上三次</strong>寫的。<br>
+      每個按讚數要分開取名：likes1、likes2、likes3...<br>
+      如果要改樣式，要改三個地方。
+    </div>
+
+    <!-- 沒有元件：複製貼上三次，變數名稱要各自取 -->
+    <div class="card">
+      <div class="avatar" style="background:#e3f2fd">👨‍💻</div>
+      <div>
+        <div class="card-name">Alex</div>
+        <div class="card-role">前端工程師</div>
+      </div>
+      <button class="like-btn" :class="{ liked: liked1 }" @click="liked1 = !liked1; likes1 += liked1 ? 1 : -1">
+        ❤️ {{ likes1 }}
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="avatar" style="background:#fce4ec">👩‍🎨</div>
+      <div>
+        <div class="card-name">Sara</div>
+        <div class="card-role">UI 設計師</div>
+      </div>
+      <button class="like-btn" :class="{ liked: liked2 }" @click="liked2 = !liked2; likes2 += liked2 ? 1 : -1">
+        ❤️ {{ likes2 }}
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="avatar" style="background:#e8f5e9">🧑‍💼</div>
+      <div>
+        <div class="card-name">Ken</div>
+        <div class="card-role">專案經理</div>
+      </div>
+      <button class="like-btn" :class="{ liked: liked3 }" @click="liked3 = !liked3; likes3 += liked3 ? 1 : -1">
+        ❤️ {{ likes3 }}
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const { createApp, ref } = Vue
+
+  // ✅ 這是「卡片元件」— 寫一次，用三次
+  const MemberCard = {
+    props: ['emoji', 'name', 'role'],  // 接收外部傳入的資料
+    setup(props) {
+      const likes = ref(0)
+      const liked = ref(false)
+      function toggle() {
+        liked.value = !liked.value
+        likes.value += liked.value ? 1 : -1
+      }
+      return { likes, liked, toggle }
+    },
+    template: `
+      <div class="card">
+        <div class="avatar" style="background:#f3e5f5">{{ emoji }}</div>
+        <div>
+          <div class="card-name">{{ name }}</div>
+          <div class="card-role">{{ role }}</div>
+        </div>
+        <button class="like-btn" :class="{ liked }" @click="toggle">
+          ❤️ {{ likes }}
+        </button>
+      </div>
+    `
+  }
+
+  createApp({
+    components: { MemberCard },
+    setup() {
+      // ❌ 沒有元件：每張卡片要各自宣告變數
+      const likes1 = ref(0), liked1 = ref(false)
+      const likes2 = ref(0), liked2 = ref(false)
+      const likes3 = ref(0), liked3 = ref(false)
+      return { likes1, liked1, likes2, liked2, likes3, liked3 }
+    }
+  }).mount('#app')
+</script>
+
+</body>
+</html>

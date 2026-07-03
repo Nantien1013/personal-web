@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>收藏 — 動漫 / 漫畫</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">dev<span>.</span></a>
+      <div class="navbar-links" id="navLinks">
+        <a href="index.html">首頁</a>
+        <a href="resume.html">簡歷</a>
+        <a href="collection.html" class="active">收藏</a>
+        <a href="vocabulary.html">單字庫</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="theme-toggle" id="themeToggle" title="切換主題">
+          <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+        <button class="navbar-menu-btn" id="menuBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page-wrapper">
+    <div class="container">
+
+      <!-- Page header -->
+      <div class="page-header">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4);">
+          <div>
+            <h1 class="page-title">🎌 收藏</h1>
+            <p class="text-muted text-sm">動漫與漫畫的個人清單</p>
+          </div>
+          <button class="btn btn-primary" id="addBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            新增作品
+          </button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-bar" id="statsBar" style="margin-top:var(--space-5);">
+          <div class="stat-item">
+            <span class="stat-number" id="statTotal">0</span>
+            <span class="stat-label">總計</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number" id="statCompleted">0</span>
+            <span class="stat-label">已完成</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number" id="statWatching">0</span>
+            <span class="stat-label">進行中</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number" id="statFavorite">0</span>
+            <span class="stat-label">最愛</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs + toolbar -->
+      <div style="padding: var(--space-4) 0 0;">
+        <div class="tabs" id="typeTabs">
+          <button class="tab-btn active" data-type="all">全部</button>
+          <button class="tab-btn" data-type="anime">動漫</button>
+          <button class="tab-btn" data-type="manga">漫畫</button>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <div class="search-box">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="input" id="searchInput" placeholder="搜尋作品名稱…">
+          </div>
+          <button class="btn btn-ghost btn-sm" id="filterToggle">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            篩選
+          </button>
+          <div class="select" style="width:140px;" id="sortSelect">
+            <select id="sortSelectEl">
+              <option value="updated_desc">最近更新</option>
+              <option value="title_asc">名稱 A-Z</option>
+              <option value="rating_desc">評分高到低</option>
+              <option value="year_desc">年份新到舊</option>
+            </select>
+          </div>
+        </div>
+        <div class="toolbar-right">
+          <div class="view-toggle">
+            <button class="view-btn active" id="viewGrid" title="卡片">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            </button>
+            <button class="view-btn" id="viewTable" title="表格">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter panel -->
+      <div class="filter-panel" id="filterPanel">
+        <div class="filter-grid">
+          <div>
+            <p class="filter-label">狀態</p>
+            <select class="select" id="filterStatus">
+              <option value="">全部</option>
+              <option value="watching">觀看中</option>
+              <option value="completed">已看完</option>
+              <option value="plan">計畫觀看</option>
+              <option value="on_hold">擱置</option>
+              <option value="dropped">放棄</option>
+            </select>
+          </div>
+          <div>
+            <p class="filter-label">番別</p>
+            <select class="select" id="filterSeason">
+              <option value="">全部</option>
+              <option value="winter">冬番（1–3月）</option>
+              <option value="spring">春番（4–6月）</option>
+              <option value="summer">夏番（7–9月）</option>
+              <option value="autumn">秋番（10–12月）</option>
+            </select>
+          </div>
+          <div>
+            <p class="filter-label">年份</p>
+            <div style="display:flex;gap:var(--space-2);align-items:center;">
+              <input type="number" class="input" id="filterYearFrom" placeholder="從" min="1960" max="2030" style="width:80px;">
+              <span class="text-muted">–</span>
+              <input type="number" class="input" id="filterYearTo" placeholder="至" min="1960" max="2030" style="width:80px;">
+            </div>
+          </div>
+          <div>
+            <p class="filter-label">最愛</p>
+            <select class="select" id="filterFavorite">
+              <option value="">全部</option>
+              <option value="1">僅最愛</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:var(--space-4);display:flex;justify-content:flex-end;gap:var(--space-2);">
+          <button class="btn btn-ghost btn-sm" id="filterReset">重設</button>
+          <button class="btn btn-primary btn-sm" id="filterApply">套用</button>
+        </div>
+      </div>
+
+      <!-- List area -->
+      <div id="listArea" style="min-height:400px;"></div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>Built with ❤️ &nbsp;·&nbsp; Vanilla JS + Node.js + MySQL</p>
+    </div>
+  </footer>
+
+  <!-- Add / Edit Modal -->
+  <div class="modal-backdrop" id="workModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle">新增作品</h2>
+        <button class="modal-close" id="modalClose">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="workForm">
+          <input type="hidden" id="workId">
+          <div class="form-field">
+            <label class="form-label">類型 *</label>
+            <select class="select" id="fType" required>
+              <option value="anime">動漫</option>
+              <option value="manga">漫畫</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">標題（中文）*</label>
+            <input type="text" class="input" id="fTitle" required placeholder="例：進擊的巨人">
+          </div>
+          <div class="form-field">
+            <label class="form-label">原文標題</label>
+            <input type="text" class="input" id="fTitleOriginal" placeholder="例：進撃の巨人">
+          </div>
+          <div class="form-field">
+            <label class="form-label">封面圖網址</label>
+            <input type="url" class="input" id="fCoverUrl" placeholder="https://...">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+            <div class="form-field">
+              <label class="form-label">發行年份</label>
+              <input type="number" class="input" id="fYear" placeholder="2024" min="1960" max="2030">
+            </div>
+            <div class="form-field anime-only">
+              <label class="form-label">番別</label>
+              <select class="select" id="fSeason">
+                <option value="">—</option>
+                <option value="winter">冬番</option>
+                <option value="spring">春番</option>
+                <option value="summer">夏番</option>
+                <option value="autumn">秋番</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+            <div class="form-field">
+              <label class="form-label">狀態 *</label>
+              <select class="select" id="fStatus" required>
+                <option value="plan">計畫觀看</option>
+                <option value="watching">觀看中</option>
+                <option value="completed">已看完</option>
+                <option value="on_hold">擱置</option>
+                <option value="dropped">放棄</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-label">評分</label>
+              <div class="stars" id="fRatingStars">
+                <span class="star" data-v="1">★</span>
+                <span class="star" data-v="2">★</span>
+                <span class="star" data-v="3">★</span>
+                <span class="star" data-v="4">★</span>
+                <span class="star" data-v="5">★</span>
+              </div>
+              <input type="hidden" id="fRating" value="">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);" id="episodeFields">
+            <div class="form-field anime-only">
+              <label class="form-label">總集數</label>
+              <input type="number" class="input" id="fEpisodesTotal" placeholder="12" min="0">
+            </div>
+            <div class="form-field anime-only">
+              <label class="form-label">已看集數</label>
+              <input type="number" class="input" id="fEpisodesWatched" placeholder="0" min="0">
+            </div>
+            <div class="form-field manga-only" style="display:none;">
+              <label class="form-label">總卷數</label>
+              <input type="number" class="input" id="fVolumesTotal" placeholder="0" min="0">
+            </div>
+            <div class="form-field manga-only" style="display:none;">
+              <label class="form-label">已讀卷數</label>
+              <input type="number" class="input" id="fVolumesRead" placeholder="0" min="0">
+            </div>
+          </div>
+          <div class="form-field">
+            <label class="form-label">心得筆記</label>
+            <textarea class="textarea" id="fNote" placeholder="寫下你的感想…" style="min-height:80px;"></textarea>
+          </div>
+          <div class="form-field">
+            <label style="display:flex;align-items:center;gap:var(--space-2);cursor:pointer;">
+              <input type="checkbox" id="fFavorite" style="width:16px;height:16px;">
+              <span class="form-label" style="margin:0;">加入最愛 ❤️</span>
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="cancelBtn">取消</button>
+        <button class="btn btn-danger btn-sm" id="deleteBtn" style="display:none;margin-right:auto;">刪除</button>
+        <button class="btn btn-primary" id="saveBtn">儲存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Modal -->
+  <div class="modal-backdrop" id="confirmModal">
+    <div class="modal confirm-dialog">
+      <div class="modal-body" style="padding:var(--space-6);">
+        <p class="confirm-title">確定要刪除？</p>
+        <p class="confirm-desc" id="confirmDesc">此操作無法復原。</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="confirmCancel">取消</button>
+        <button class="btn btn-danger" id="confirmOk">刪除</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/collection.js"></script>
+  <script>
+    // Theme
+    const html = document.documentElement;
+    html.dataset.theme = localStorage.getItem('theme') || 'dark';
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    function updateThemeIcon(t) {
+      themeIcon.innerHTML = t === 'dark'
+        ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+        : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+    }
+    updateThemeIcon(html.dataset.theme);
+    themeToggle.addEventListener('click', () => {
+      const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+      html.dataset.theme = next;
+      localStorage.setItem('theme', next);
+      updateThemeIcon(next);
+    });
+    document.getElementById('menuBtn').addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>
