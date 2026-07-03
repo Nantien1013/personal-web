@@ -3,26 +3,14 @@ namespace Tests\Unit;
 
 use App\Models\StudyVocabulary;
 use App\Services\SpacedRepetition;
-use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Support\Carbon;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class SpacedRepetitionTest extends TestCase
 {
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-
-        // StudyVocabulary's `datetime` casts need a connection resolver to format
-        // dates (Eloquent calls getConnection()->getQueryGrammar() even when just
-        // constructing an in-memory instance with a Carbon value). This is a pure
-        // PHP unit test with no Laravel app bootstrap, so we register a minimal
-        // in-memory SQLite connection rather than pulling in the full Tests\TestCase.
-        $capsule = new Capsule;
-        $capsule->addConnection(['driver' => 'sqlite', 'database' => ':memory:']);
-        $capsule->setAsGlobal();
-        $capsule->bootEloquent();
-    }
+    // Extends Laravel's Tests\TestCase so the app boot provides the connection
+    // resolver that StudyVocabulary's datetime casts need — no manual Capsule
+    // bootstrap, no leaked global resolver. No DB rows are read or written.
 
     protected function setUp(): void { parent::setUp(); Carbon::setTestNow('2026-07-04 12:00:00'); }
     protected function tearDown(): void { Carbon::setTestNow(); parent::tearDown(); }
