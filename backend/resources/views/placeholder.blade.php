@@ -1,5 +1,5 @@
 <x-layouts.app>
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 class="font-display text-3xl font-semibold">個人網站</h1>
+        <x-empty-state message="此頁面尚在建置中。" />
     </div>
 </x-layouts.app>

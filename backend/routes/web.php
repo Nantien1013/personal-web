@@ -1,8 +1,20 @@
 <?php
 
+use App\Livewire\Actions\Logout;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
+
+Route::view('/resume', 'resume')->name('resume');       // replaced in Task 12
+Route::view('/collection', 'placeholder')->name('collection'); // replaced in Task 8
+Route::view('/vocabulary', 'placeholder')->name('vocabulary'); // replaced in Task 9
+
+Route::post('/logout', function (Request $request, Logout $logout) {
+    $logout();
+
+    return redirect()->route('home');
+})->middleware('auth')->name('logout');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
