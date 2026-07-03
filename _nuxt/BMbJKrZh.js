@@ -1,0 +1,1 @@
+import{e as n,g as r}from"./CBMsOuPa.js";const u=()=>{const s=r(),e=n();return(a,t={})=>{const o={Accept:"application/json",...t.headers??{}};return e.token&&(o.Authorization=`Bearer ${e.token}`),$fetch(a,{baseURL:s.public.apiBase,...t,headers:o})}};export{u};
