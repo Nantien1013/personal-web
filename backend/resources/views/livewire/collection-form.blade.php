@@ -1,6 +1,10 @@
 <div>
     @if ($show)
-        <x-modal name="collection-form" :show="true" focusable maxWidth="2xl">
+        {{-- Livewire-driven modal: $show is the single source of truth. Escape and
+             backdrop both call $wire.close() so Alpine can never desync from server. --}}
+        <div class="fixed inset-0 z-50 overflow-y-auto px-4 py-6 sm:px-0" x-data x-on:keydown.escape.window="$wire.close()" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 bg-black/50" wire:click="close"></div>
+            <div class="relative mb-6 sm:w-full sm:max-w-2xl sm:mx-auto bg-[var(--color-surface)] text-[var(--color-ink)] rounded-lg overflow-hidden shadow-xl border border-[var(--color-line)]">
             <form wire:submit="save" class="flex flex-col gap-5 p-6">
                 <div class="flex items-center justify-between">
                     <h2 class="font-display text-xl font-semibold">
@@ -164,6 +168,7 @@
                     </div>
                 </div>
             </form>
-        </x-modal>
+            </div>
+        </div>
     @endif
 </div>
