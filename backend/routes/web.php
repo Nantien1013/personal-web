@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'home')->name('home');
 
 Route::view('/resume', 'resume')->name('resume');       // replaced in Task 12
-Route::view('/collection', 'placeholder')->name('collection'); // replaced in Task 8
+Route::get('/collection', \App\Livewire\CollectionIndex::class)->name('collection');
 Route::view('/vocabulary', 'placeholder')->name('vocabulary'); // replaced in Task 9
 
 Route::post('/logout', function (Request $request, Logout $logout) {
