@@ -19,13 +19,16 @@ class CollectionIndexTest extends TestCase
 
     public function test_lists_and_filters_by_type(): void
     {
-        CollectionWork::factory()->create(['type' => 'anime', 'title' => 'A']);
-        CollectionWork::factory()->create(['type' => 'manga', 'title' => 'M']);
+        // Distinctive multi-character titles: single-char titles (e.g. 'A'/'M') are
+        // flaky because assertDontSee scans the raw HTML, which includes Livewire's
+        // random wire:id token that can itself contain that character.
+        CollectionWork::factory()->create(['type' => 'anime', 'title' => 'AnimeOnly']);
+        CollectionWork::factory()->create(['type' => 'manga', 'title' => 'MangaOnly']);
 
         Livewire::test(CollectionIndex::class)
-            ->assertSee('A')->assertSee('M')
+            ->assertSee('AnimeOnly')->assertSee('MangaOnly')
             ->set('type', 'anime')
-            ->assertSee('A')->assertDontSee('M');
+            ->assertSee('AnimeOnly')->assertDontSee('MangaOnly');
     }
 
     public function test_search_matches_title_and_original(): void
