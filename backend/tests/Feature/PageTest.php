@@ -18,4 +18,22 @@ class PageTest extends TestCase
             $this->assertStringContainsString($label, $html);
         }
     }
+
+    public function test_home_has_nav_cards_and_socials(): void
+    {
+        $this->withoutVite();
+        $html = $this->get('/')->assertOk()->getContent();
+        foreach (['個人簡歷','收藏','單字庫','GitHub','Email'] as $t) {
+            $this->assertStringContainsString($t, $html);
+        }
+    }
+
+    public function test_resume_renders_sections(): void
+    {
+        $this->withoutVite();
+        $html = $this->get('/resume')->assertOk()->getContent();
+        foreach (['Education','Experience','Skills'] as $t) {
+            $this->assertStringContainsString($t, $html);
+        }
+    }
 }
