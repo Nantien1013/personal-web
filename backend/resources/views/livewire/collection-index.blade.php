@@ -214,4 +214,6 @@
             </div>
         </div>
     </div>
+
+    <livewire:collection-form />
 </div>
