@@ -40,4 +40,14 @@ class FlashcardTest extends TestCase
         StudyVocabulary::factory()->create(['next_review_at' => now()->subDay()]);
         Livewire::test(Flashcard::class)->call('rate', 'remembered')->assertForbidden();
     }
+
+    public function test_rate_is_noop_when_queue_exhausted(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        // No due cards => empty queue => rate() must be a safe no-op (no undefined-index error).
+        Livewire::actingAs($admin)->test(Flashcard::class)
+            ->call('rate', 'remembered')
+            ->assertSet('reviewedToday', 0)
+            ->assertHasNoErrors();
+    }
 }

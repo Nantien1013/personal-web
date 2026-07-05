@@ -38,10 +38,13 @@ class Flashcard extends Component
 
     public function rate(string $result, SpacedRepetition $svc): void
     {
-        abort_if(! in_array($result, ['forgot', 'vague', 'remembered', 'mastered'], true), 422);
+        if (! isset($this->queue[$this->index])) {
+            return; // queue exhausted — nothing to rate (e.g. double-click on last card)
+        }
 
         $card = StudyVocabulary::findOrFail($this->queue[$this->index]['id']);
         $this->authorize('update', $card);
+        abort_if(! in_array($result, ['forgot', 'vague', 'remembered', 'mastered'], true), 422);
         [$next, $fam] = $svc->calculate($card, $result);
 
         $card->update([
