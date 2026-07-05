@@ -2,7 +2,7 @@
 namespace Tests\Feature;
 
 use App\Livewire\VocabularyIndex;
-use App\Models\StudyVocabulary;
+use App\Models\{StudyVocabulary, User};
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -28,5 +28,18 @@ class VocabularyIndexTest extends TestCase
             ->set('search', 'alpha')     // matches alpha, alphabet, beta(meaning)
             ->set('familiarity', 5)      // must AND with search -> alpha, beta
             ->assertSee('alpha')->assertSee('beta')->assertDontSee('alphabet');
+    }
+
+    public function test_add_tab_hidden_from_non_admins(): void
+    {
+        // The add tab/form is admin-only (writes are policy-gated); guests must not see it.
+        // escape=false so the raw wire:click attribute is matched literally.
+        Livewire::test(VocabularyIndex::class)->assertDontSee("setMode('add')", false);
+    }
+
+    public function test_add_tab_visible_to_admin(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        Livewire::actingAs($admin)->test(VocabularyIndex::class)->assertSee("setMode('add')", false);
     }
 }

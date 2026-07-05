@@ -136,7 +136,7 @@
                                 <th class="px-4 py-2 font-medium">年份</th>
                                 <th class="px-4 py-2 font-medium">評分</th>
                                 <th class="px-4 py-2 font-medium">分類</th>
-                                @can('update', App\Models\CollectionWork::class)
+                                @can('create', App\Models\CollectionWork::class)
                                     <th class="px-4 py-2 font-medium">操作</th>
                                 @endcan
                             </tr>

@@ -15,9 +15,11 @@
             <x-card class="!p-4"><x-stat label="平均熟悉度" :value="$stats['avg_familiarity']" /></x-card>
         </div>
 
-        {{-- Mode tabs --}}
+        {{-- Mode tabs (add is admin-only, matching the write policy) --}}
+        @php($canAdd = auth()->check() && auth()->user()->can('create', \App\Models\StudyVocabulary::class))
         <div role="tablist" aria-label="單字庫模式" class="inline-flex w-fit rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-1">
             @foreach (['browse' => '瀏覽', 'add' => '新增', 'flashcard' => '複習'] as $key => $label)
+                @if ($key === 'add' && ! $canAdd) @continue @endif
                 <button
                     type="button"
                     role="tab"
@@ -34,7 +36,7 @@
     </div>
 
     <div class="mt-8">
-        @if ($mode === 'add')
+        @if ($mode === 'add' && $canAdd)
             <livewire:vocabulary-form />
         @elseif ($mode === 'flashcard')
             <livewire:flashcard />

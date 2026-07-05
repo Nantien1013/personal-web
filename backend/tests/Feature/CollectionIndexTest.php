@@ -2,7 +2,7 @@
 namespace Tests\Feature;
 
 use App\Livewire\CollectionIndex;
-use App\Models\{CollectionCategory, CollectionWork};
+use App\Models\{CollectionCategory, CollectionWork, User};
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -63,5 +63,19 @@ class CollectionIndexTest extends TestCase
 
         Livewire::test(CollectionIndex::class)
             ->assertViewHas('stats', fn ($s) => $s['total'] === 3 && $s['completed'] === 2 && $s['favorites'] === 1);
+    }
+
+    public function test_table_view_renders_for_admin(): void
+    {
+        // Regression: the table header used @can('update', CollectionWork::class) with a
+        // class-string, which threw ArgumentCountError (500) for any authenticated user in
+        // table view. The 操作 column must render for an admin without error.
+        $admin = User::factory()->create(['role' => 'admin']);
+        CollectionWork::factory()->create(['title' => 'Rendered']);
+
+        Livewire::actingAs($admin)->test(CollectionIndex::class)
+            ->set('view', 'table')
+            ->assertSee('Rendered')
+            ->assertSee('操作');
     }
 }
